@@ -10,8 +10,8 @@ import UIKit
 
 class MasterViewController: UITableViewController {
 
-    var detailViewController: ImagePresentationVC? = nil
-    var objects = [Any]()
+//    var detailViewController: ImagePresentationVC? = nil
+    var objects = [ImageItem]()
 
 
     override func viewDidLoad() {
@@ -22,17 +22,17 @@ class MasterViewController: UITableViewController {
 
     // MARK: - Segues
 
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showDetail" {
-//            if let indexPath = tableView.indexPathForSelectedRow {
-//                let object = objects[indexPath.row] as! NSDate
-//                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-//                controller.detailItem = object
-//                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-//                controller.navigationItem.leftItemsSupplementBackButton = true
-//            }
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let object = objects[indexPath.row]
+                let controller = (segue.destination as! UINavigationController).topViewController as! ImagePresentationVC
+                controller.image = object
+                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
+            }
+        }
+    }
 
     // MARK: - Table View
 
@@ -47,10 +47,18 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let object = objects[indexPath.row] as! ImageItem
+        let object = objects[indexPath.row]
         cell.textLabel!.text = object.name
         cell.backgroundColor = object.color
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.frame.size.height / CGFloat(objects.count)
     }
 
 
