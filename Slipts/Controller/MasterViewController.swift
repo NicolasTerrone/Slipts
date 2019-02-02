@@ -13,10 +13,10 @@ class MasterViewController: UITableViewController {
 //    var detailViewController: ImagePresentationVC? = nil
     var objects = [ImageItem]()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         objects = DataService.instance.getImages()
+        self.title = "Slipts"
     }
 
 
@@ -51,14 +51,16 @@ class MasterViewController: UITableViewController {
         cell.textLabel!.text = object.name
         cell.backgroundColor = object.color
         return cell
-    }
+    } 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.size.height / CGFloat(objects.count)
+        let heightNavBar = navigationController!.navigationBar.frame.height
+        return ((tableView.frame.size.height - heightNavBar) / CGFloat(objects.count))
+
     }
 
 
